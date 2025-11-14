@@ -1,0 +1,24 @@
+services:
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: npm
+    restart: unless-stopped
+    
+    # 81번 포트는 NPM의 관리자 웹페이지입니다.
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+
+    volumes:
+      # NPM의 설정 데이터와 SSL 인증서를 저장할 폴더입니다.
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+    # NPM이 다른 Docker 컨테이너와 통신할 전용 네트워크
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    name: proxy-net

@@ -1,2 +1,6 @@
 # dotenv files
 .env
+
+# NPM data
+npm/data/
+npm/letsencrypt/
