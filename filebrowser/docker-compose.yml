@@ -1,0 +1,28 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    restart: unless-stopped
+    
+    # (중요) FileBrowser가 내 계정(neoskyclad) 권한으로 실행되도록 설정
+    user: "1000:1000" # (id neoskyclad -> uid=1000, gid=1000)
+
+    ports:
+      # NPM이 내부적으로 접속할 포트 (8080)
+      - "8080:80" # 컨테이너는 80포트로 실행됨
+    
+    volumes:
+      # (1) FileBrowser가 사용할 실제 파일 저장소
+      - /home/neoskyclad/my-cloud:/srv
+      
+      # (2) FileBrowser의 설정/DB 파일
+      - ./config:/config
+      # (3) FileBrowser의 설정 파일 (config 폴더에 생성됨)
+      - ./database.db:/database/filebrowser.db
+
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    external: true
