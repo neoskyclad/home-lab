@@ -1,0 +1,18 @@
+services:
+  uptimekuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    
+    ports:
+      - "3001:3001"
+      
+    volumes:
+      - ./data:/app/data
+      
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    external: true # 이미 npm에서 만든 네트워크를 쓰겠다는 의미
