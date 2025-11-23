@@ -5,5 +5,6 @@
 npm/data/
 npm/letsencrypt/
 npm/account.txt
+npm/cloudflare.txt
 
 */data/

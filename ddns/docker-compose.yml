@@ -1,0 +1,20 @@
+
+services:
+  cloudflare-ddns:
+    image: favonia/cloudflare-ddns:latest
+    container_name: cloudflare-ddns
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Seoul
+      - CF_API_TOKEN=${CF_API_TOKEN}
+      - DOMAINS=${CF_DDNS_DOMAIN},*.${CF_DDNS_DOMAIN}
+      # Proxy 모드 켜기
+      - PROXIED=true
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    external: true
