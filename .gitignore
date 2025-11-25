@@ -8,3 +8,6 @@ npm/account.txt
 npm/cloudflare.txt
 
 */data/
+
+# Memos Data
+memos/.memos/

@@ -15,4 +15,4 @@ services:
 
 networks:
   proxy-net:
-    external: true # 이미 npm에서 만든 네트워크를 쓰겠다는 의미
+    external: true
