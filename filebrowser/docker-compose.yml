@@ -18,7 +18,7 @@ services:
       # (2) FileBrowser의 설정/DB 파일
       - ./config:/config
       # (3) FileBrowser의 설정 파일 (config 폴더에 생성됨)
-      - ./database.db:/database/filebrowser.db
+      - ./database:/database
 
     networks:
       - proxy-net

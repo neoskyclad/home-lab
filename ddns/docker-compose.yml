@@ -12,8 +12,12 @@ services:
       - DOMAINS=${CF_DDNS_DOMAIN},*.${CF_DDNS_DOMAIN}
       # Proxy 모드 켜기
       - PROXIED=true
+      - IP6_PROVIDER=none
     networks:
       - proxy-net
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
 networks:
   proxy-net:

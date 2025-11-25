@@ -9,5 +9,9 @@ npm/cloudflare.txt
 
 */data/
 
-# Memos Data
+# Filebroser data
+filebrowser/config/
+filebrowser/database/
+
+# Memos data
 memos/.memos/
