@@ -1,8 +1,7 @@
 
 networks:
   proxy-net:
-    name: proxy-net
-    driver: bridge
+    external: true
 
 include:
   - npm/docker-compose.yml
