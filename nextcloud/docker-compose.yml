@@ -1,0 +1,75 @@
+
+services:
+  # 1. Database (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: nextcloud-db
+    restart: always
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
+    networks:
+      - proxy-net
+
+  # 2. Cache (Redis)
+  redis:
+    image: redis:alpine
+    container_name: nextcloud-redis
+    restart: always
+    networks:
+      - proxy-net
+
+  # 3. App (Nextcloud FPM)
+  app:
+    image: nextcloud:fpm-alpine
+    container_name: nextcloud-app
+    restart: always
+    volumes:
+      - ./nextcloud-data:/var/www/html # 메인 데이터
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
+      - REDIS_HOST=redis
+      - TRUSTED_PROXIES=192.168.0.0/16 # 프록시 신뢰 설정
+      - OVERWRITEPROTOCOL=https # Cloudflare SSL 사용 시 필수
+    networks:
+      - proxy-net
+    depends_on:
+      - db
+      - redis
+
+  # 4. Web Server (Nginx)
+  web:
+    image: nginx:alpine
+    container_name: nextcloud-web
+    restart: always
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nextcloud-data:/var/www/html:ro # App과 같은 데이터를 공유해야 함!
+    networks:
+      - proxy-net
+    depends_on:
+      - app
+
+  # 5. Cron (백그라운드 작업)
+  cron:
+    image: nextcloud:fpm-alpine
+    container_name: nextcloud-cron
+    restart: always
+    volumes:
+      - ./nextcloud-data:/var/www/html
+    entrypoint: /cron.sh
+    networks:
+      - proxy-net
+    depends_on:
+      - db
+      - redis
+
+networks:
+  proxy-net:
+    external: true

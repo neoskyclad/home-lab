@@ -9,4 +9,4 @@ include:
   - portainer/docker-compose.yml
   - uptimekuma/docker-compose.yml
   - memos/docker-compose.yml
-  - filebrowser/docker-compose.yml
+  - nextcloud/docker-compose.yml
